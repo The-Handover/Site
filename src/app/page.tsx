@@ -5,7 +5,7 @@ import miaPhoto from "@/assets/mentors/mia.jpg";
 import tanyaPhoto from "@/assets/mentors/tanya.jpg";
 import miaAndTanyaPhoto from "@/assets/mentors/mia-and-tanya.jpg";
 import wordmark from "@/assets/brand/the-handover-cropped-transparent.png";
-import { countryOptions, stateOptions } from "@/data/salesforceLeadOptions";
+import { LeadForm } from "@/components/LeadForm";
 
 const expectations = [
   {
@@ -292,124 +292,10 @@ export default function Home() {
               value ("Web") are copied verbatim from that generated form —
               lead_source in particular must stay "Web" since LeadSource is a
               restricted picklist in Salesforce and any other value would
-              cause the submission to fail.
+              cause the submission to fail. See src/components/LeadForm.tsx.
             */}
             <Reveal delay={0.1}>
-              <form
-                action="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8&orgId=00DQE00000FXBNR"
-                method="POST"
-                className="mt-10 space-y-5 rounded-2xl border border-black/5 bg-white/90 p-8 shadow-sm"
-              >
-                <input type="hidden" name="oid" value="00DQE00000FXBNR" />
-                <input
-                  type="hidden"
-                  name="retURL"
-                  value="https://the-handover.github.io/Site/thank-you/"
-                />
-                <input type="hidden" name="lead_source" value="Web" />
-
-                <div className="grid gap-5 sm:grid-cols-2">
-                  <Field
-                    label="First Name"
-                    name="first_name"
-                    autoComplete="given-name"
-                    maxLength={40}
-                    required
-                  />
-                  <Field
-                    label="Last Name"
-                    name="last_name"
-                    autoComplete="family-name"
-                    maxLength={80}
-                    required
-                  />
-                </div>
-                <Field
-                  label="Email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  maxLength={80}
-                  required
-                />
-                <div className="grid gap-5 sm:grid-cols-2">
-                  <Select label="State/Province" name="state_code" options={stateOptions} />
-                  <Select label="Country" name="country_code" options={countryOptions} />
-                </div>
-                <Field
-                  label="LinkedIn profile"
-                  name="00NQE00000bzmH1"
-                  type="url"
-                  autoComplete="url"
-                  maxLength={255}
-                />
-                <div className="grid gap-5 sm:grid-cols-2">
-                  <Select
-                    label="How have you used Claude before?"
-                    name="00NQE00000bzmSD"
-                    options={[
-                      { value: "", label: "Select…" },
-                      { value: "Used for work", label: "Used for work" },
-                      { value: "Used personally", label: "Used personally" },
-                      { value: "Have not tried yet", label: "Have not tried yet" },
-                    ]}
-                  />
-                  <Select
-                    label="Have you used Claude Code?"
-                    name="00NQE00000bzmTp"
-                    options={[
-                      { value: "", label: "Select…" },
-                      { value: "Yes", label: "Yes" },
-                      { value: "No", label: "No" },
-                      { value: "Not sure", label: "Not sure" },
-                    ]}
-                  />
-                </div>
-                <Select
-                  label="Do you use Salesforce in your day-to-day work?"
-                  name="00NQE00000bzmLm"
-                  options={[
-                    { value: "", label: "Select…" },
-                    { value: "1", label: "Yes" },
-                    { value: "0", label: "No" },
-                  ]}
-                />
-                <div>
-                  <label htmlFor="00NQE00000bzirf" className="block text-sm font-medium text-foreground">
-                    What&apos;s your current role?
-                  </label>
-                  <textarea
-                    id="00NQE00000bzirf"
-                    name="00NQE00000bzirf"
-                    rows={2}
-                    placeholder="e.g. Salesforce Admin at a nonprofit, Slack consultant, developer"
-                    className="mt-1 w-full rounded-lg border border-black/10 px-3 py-2 text-foreground focus:border-pbc-blue focus:outline-none focus:ring-2 focus:ring-pbc-blue/30"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="description" className="block text-sm font-medium text-foreground">
-                    Why are you interested, and what&apos;s slowing you down at work?
-                  </label>
-                  <p className="mt-1 text-sm text-foreground/60">
-                    Tell us the pain points you&apos;d love Claude to take off your plate. We use
-                    this to shape your cohort.
-                  </p>
-                  <textarea
-                    id="description"
-                    name="description"
-                    rows={4}
-                    placeholder="e.g. Writing user stories takes hours, I spend every Friday on release notes…"
-                    className="mt-1 w-full rounded-lg border border-black/10 px-3 py-2 text-foreground focus:border-pbc-blue focus:outline-none focus:ring-2 focus:ring-pbc-blue/30"
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  className="w-full rounded-full bg-pbc-orange px-6 py-3 text-base font-semibold text-white transition-colors hover:bg-pbc-orange-dark"
-                >
-                  Submit
-                </button>
-              </form>
+              <LeadForm />
             </Reveal>
           </div>
         </section>
@@ -418,70 +304,6 @@ export default function Home() {
       <footer className="border-t border-black/5 px-6 py-8 text-center text-sm text-foreground/50">
         The Handover — {new Date().getFullYear()}
       </footer>
-    </div>
-  );
-}
-
-function Field({
-  label,
-  name,
-  type = "text",
-  autoComplete,
-  maxLength,
-  required,
-}: {
-  label: string;
-  name: string;
-  type?: string;
-  autoComplete?: string;
-  maxLength?: number;
-  required?: boolean;
-}) {
-  return (
-    <div>
-      <label htmlFor={name} className="block text-sm font-medium text-foreground">
-        {label}
-        {required && <span className="text-pbc-orange-dark"> *</span>}
-      </label>
-      <input
-        id={name}
-        name={name}
-        type={type}
-        autoComplete={autoComplete}
-        maxLength={maxLength}
-        required={required}
-        className="mt-1 w-full rounded-lg border border-black/10 px-3 py-2 text-foreground focus:border-pbc-blue focus:outline-none focus:ring-2 focus:ring-pbc-blue/30"
-      />
-    </div>
-  );
-}
-
-function Select({
-  label,
-  name,
-  options,
-}: {
-  label: string;
-  name: string;
-  options: ReadonlyArray<{ value: string; label: string }>;
-}) {
-  return (
-    <div>
-      <label htmlFor={name} className="block text-sm font-medium text-foreground">
-        {label}
-      </label>
-      <select
-        id={name}
-        name={name}
-        defaultValue=""
-        className="mt-1 w-full rounded-lg border border-black/10 bg-white px-3 py-2 text-foreground focus:border-pbc-blue focus:outline-none focus:ring-2 focus:ring-pbc-blue/30"
-      >
-        {options.map((opt) => (
-          <option key={`${opt.value}-${opt.label}`} value={opt.value}>
-            {opt.label}
-          </option>
-        ))}
-      </select>
     </div>
   );
 }
