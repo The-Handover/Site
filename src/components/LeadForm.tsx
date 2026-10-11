@@ -41,7 +41,6 @@ export function LeadForm() {
       <Field
         label="LinkedIn profile"
         name="00NQE00000bzmH1"
-        type="url"
         autoComplete="url"
         maxLength={255}
         required
